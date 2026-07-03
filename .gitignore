@@ -1,0 +1,10 @@
+# Log 檔案
+*.log
+logs/*
+!logs/.gitkeep
+
+# build 時下載的第三方資源（ECharts、world.json）
+src/vendor/
+
+# 作業系統雜項
+.DS_Store

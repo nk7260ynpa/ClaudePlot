@@ -1,0 +1,25 @@
+# ClaudePlot 圖表圖鑑 — 服務定義
+#
+# 使用方式（於專案根目錄）：
+#   docker compose -f docker/docker-compose.yaml up -d --build
+# 或直接執行 ./run.sh
+#
+# 明確指定專案名稱，避免以 compose 檔所在資料夾（docker/）作為預設專案名，
+# 而與機器上其他同樣位於 docker/ 的專案互相干擾。
+name: claudeplot
+
+services:
+  web:
+    build:
+      # context 指向專案根目錄，讓 Dockerfile 能 COPY src/ 與 docker/nginx.conf
+      context: ..
+      dockerfile: docker/Dockerfile
+    image: claudeplot:latest
+    container_name: claudeplot
+    ports:
+      # 8080/8081 已被機器上其他服務（gitlab / nginx）佔用，改用 8090
+      - "8090:80"
+    volumes:
+      # 將 nginx log 持久化到專案 logs/ 資料夾
+      - ../logs:/var/log/nginx
+    restart: unless-stopped
